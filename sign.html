@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Hall Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-icon {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #1e3c72;
+        }
+
+        .header-icon i {
+            font-size: 48px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .toggle-btn {
+            padding: 8px 20px;
+            border: none;
+            background: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            color: #1e3c72;
+        }
+
+        .toggle-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #1e3c72;
+        }
+
+        form .input-field {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2e2e2e;
+        }
+
+        .input-field .icon-wrapper {
+            position: absolute;
+            height: 45px;
+            width: 45px;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-field input {
+            width: 100%;
+            height: 45px;
+            padding: 10px 10px 10px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-field input:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 8px rgba(30, 60, 114, 0.2);
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            height: 45px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button[type="submit"]:hover {
+            background: #2a5298;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .terms {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .terms a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: #1e3c72;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        #loginForm {
+            display: none;
+        }
+
+        .otp-field {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .otp-field input {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .otp-field input:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 8px rgba(30, 60, 114, 0.2);
+            outline: none;
+        }
+
+        .resend-otp {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .resend-otp button {
+            background: none;
+            border: none;
+            color: #1e3c72;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .resend-otp button:disabled {
+            color: #666;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        .timer {
+            color: #666;
+            font-size: 14px;
+        }
+
+        #otpForm {
+            display: none;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #1e3c72;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-button i {
+            font-size: 14px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 5px;
+        }
+
+        .step.active {
+            background: #1e3c72;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-icon">
+            <i class="fas fa-hotel"></i>
+        </div>
+        <div class="title">Welcome to Hall Booking</div>
+        <div class="subtitle">Book your perfect venue with ease</div>
+        
+        <div class="form-toggle">
+            <button type="button" class="toggle-btn active" onclick="toggleForm('signup')">Sign Up</button>
+            <button type="button" class="toggle-btn" onclick="toggleForm('login')">Login</button>
+        </div>
+
+        <form id="signupForm" onsubmit="return validateSignupForm(event)">
+            <div class="input-field">
+                <label for="name">Full Name</label>
+                <div class="icon-wrapper">
+                    <i class="fas fa-user"></i>
+                </div>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+                <div class="error" id="nameError">Please enter your full name (first & last name)</div>
+            </div>
+            <div class="input-field">
+                <label for="phone">Phone Number</label>
+                <div class="icon-wrapper">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                <div class="error" id="phoneError">Please enter a valid 10-digit phone number</div>
+            </div>
+            <button type="submit">Create Account</button>
+        </form>
+
+        <form id="loginForm" onsubmit="return validateLoginForm(event)">
+            <div class="step-indicator">
+                <div class="step active"></div>
+                <div class="step"></div>
+            </div>
+            <div class="input-field">
+                <label for="loginPhone">Phone Number</label>
+                <div class="icon-wrapper">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <input type="tel" id="loginPhone" placeholder="Enter your phone number" required>
+                <div class="error" id="loginPhoneError">Please enter a valid phone number</div>
+            </div>
+            <button type="submit">Send OTP</button>
+        </form>
+
+        <form id="otpForm" onsubmit="return validateOTP(event)">
+            <button type="button" class="back-button" onclick="showLoginForm()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="step-indicator">
+                <div class="step"></div>
+                <div class="step active"></div>
+            </div>
+            <div class="subtitle">Enter the OTP sent to your phone</div>
+            <div class="otp-field">
+                <input type="text" maxlength="1" onkeyup="moveToNext(this, 0)" pattern="[0-9]">
+                <input type="text" maxlength="1" onkeyup="moveToNext(this, 1)" pattern="[0-9]">
+                <input type="text" maxlength="1" onkeyup="moveToNext(this, 2)" pattern="[0-9]">
+                <input type="text" maxlength="1" onkeyup="moveToNext(this, 3)" pattern="[0-9]">
+            </div>
+            <div class="resend-otp">
+                <span class="timer" id="timer"></span>
+                <button type="button" id="resendButton" onclick="resendOTP()" disabled>Resend OTP</button>
+            </div>
+            <button type="submit">Verify & Login</button>
+        </form>
+
+        <div class="terms">
+            By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(formType) {
+            const signupForm = document.getElementById('signupForm');
+            const loginForm = document.getElementById('loginForm');
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            
+            toggleBtns.forEach(btn => btn.classList.remove('active'));
+            
+            if (formType === 'login') {
+                signupForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                toggleBtns[1].classList.add('active');
+            } else {
+                signupForm.style.display = 'block';
+                loginForm.style.display = 'none';
+                toggleBtns[0].classList.add('active');
+            }
+        }
+
+        function validateSignupForm(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const nameError = document.getElementById('nameError');
+            const phoneError = document.getElementById('phoneError');
+            
+            nameError.style.display = 'none';
+            phoneError.style.display = 'none';
+            
+            let isValid = true;
+            
+            const nameRegex = /^[A-Za-z]+ [A-Za-z ]+$/;
+            if (!nameRegex.test(name)) {
+                nameError.style.display = 'block';
+                isValid = false;
+            }
+            
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                phoneError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                alert('Account created successfully!\nName: ' + name + '\nPhone: ' + phone + '\n\nProceeding to hall selection...');
+                document.getElementById('signupForm').reset();
+            }
+            
+            return false;
+        }
+
+        function validateLoginForm(event) {
+            event.preventDefault();
+            
+            const phone = document.getElementById('loginPhone').value;
+            const phoneError = document.getElementById('loginPhoneError');
+            
+            phoneError.style.display = 'none';
+            
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                phoneError.style.display = 'block';
+                return false;
+            }
+            
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'block';
+            startTimer();
+            
+            alert('OTP has been sent to ' + phone);
+            return false;
+        }
+
+        function validateOTP(event) {
+            event.preventDefault();
+            
+            const inputs = document.querySelectorAll('.otp-field input');
+            let otp = '';
+            inputs.forEach(input => {
+                otp += input.value;
+            });
+            
+            if (otp.length === 4) {
+                alert('Login successful!\nWelcome back!\n\nRedirecting to hall selection...');
+                resetForms();
+            } else {
+                alert('Please enter a valid OTP');
+            }
+            
+            return false;
+        }
+
+        function moveToNext(input, index) {
+            if (input.value.length === 1) {
+                const inputs = document.querySelectorAll('.otp-field input');
+                if (index < 3) {
+                    inputs[index + 1].focus();
+                }
+            } else if (input.value.length === 0 && index > 0) {
+                const inputs = document.querySelectorAll('.otp-field input');
+                inputs[index - 1].focus();
+            }
+        }
+
+        function startTimer() {
+            let timeLeft = 30;
+            const timerDisplay = document.getElementById('timer');
+            const resendButton = document.getElementById('resendButton');
+            
+            const timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerDisplay.textContent = '';
+                    resendButton.disabled = false;
+                } else {
+                    timerDisplay.textContent = `Resend OTP in ${timeLeft}s`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        function resendOTP() {
+            const resendButton = document.getElementById('resendButton');
+            resendButton.disabled = true;
+            startTimer();
+            alert('New OTP has been sent!');
+        }
+
+        function showLoginForm() {
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function resetForms() {
+            document.getElementById('loginForm').reset();
+            document.getElementById('otpForm').reset();
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('otpForm').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
